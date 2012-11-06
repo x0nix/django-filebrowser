@@ -482,13 +482,13 @@ class FileBrowserSite(object):
                     return HttpResponseBadRequest('Invalid request! No filename given.')
             else: # Basic (iframe) submission
                 # TODO: This needs some attention, do we use this at all?
-                folder = request.POST.get('folder')
+                folder = request.REQUEST.get('folder')
                 if len(request.FILES) == 1:
                     filedata = request.FILES.values()[0]
                 else:
                     raise Http404('Invalid request! Multiple files included.')
                 # filedata.name = convert_filename(upload.name)
-                filedata.name = convert_filename(request.POST.get('file_name'))
+                filedata.name = convert_filename(filedata._name)
 
             fb_uploadurl_re = re.compile(r'^.*(%s)' % reverse("filebrowser:fb_upload", current_app=self.name))
             folder = fb_uploadurl_re.sub('', folder)
